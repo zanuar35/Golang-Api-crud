@@ -6,6 +6,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
+	"gorm.io/entity"
 	"gorm.io/gorm"
 )
 
@@ -28,7 +29,7 @@ func SetupDatabaseConnection() *gorm.DB {
 		panic("Failed to create connecion to database")
 	}
 
-	//db.AutoMigrate()
+	db.AutoMigrate(&entity.User{}, &entity.Book{})
 	return db
 }
 

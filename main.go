@@ -5,11 +5,16 @@ import (
 	"gorm.io/config"
 	"gorm.io/controller"
 	"gorm.io/gorm"
+	"gorm.io/repository"
+	"gorm.io/service"
 )
 
 var (
 	db             *gorm.DB                  = config.SetupDatabaseConnection()
-	authController controller.AuthController = controller.NewAuthController()
+	userRepository repository.UserRepository = repository.NewUserRepository(db)
+	jwtService     service.JWTService        = service.NewJWTService()
+	authService    service.AuthService       = service.NewAuthService(userRepository)
+	authController controller.AuthController = controller.NewAuthController(authService, jwtService)
 )
 
 func main() {
