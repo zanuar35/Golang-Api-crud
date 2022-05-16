@@ -70,3 +70,15 @@ func (c *authController) Register(ctx *gin.Context) {
 		ctx.JSON(http.StatusCreated, response)
 	}
 }
+
+// func (c *authController) Logout(ctx *gin.Context) {
+// 	token := ctx.GetHeader("Authorization")
+// 	if token == "" {
+// 		response := helper.BuildErrorResponse("failed to process request", "Invalid token", helper.EmptyObj{})
+// 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
+// 		return
+// 	}
+// 	c.jwtService.DeleteToken(token)
+// 	response := helper.BuildResponse(true, "OK!", helper.EmptyObj{})
+// 	ctx.JSON(http.StatusOK, response)
+// }
