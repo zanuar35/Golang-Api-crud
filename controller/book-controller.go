@@ -60,6 +60,7 @@ func (c *bookController) FindByID(context *gin.Context) {
 func (c *bookController) Insert(context *gin.Context) {
 	var BookCreateDTO dto.BookCreateDTO
 	errDTO := context.ShouldBind(&BookCreateDTO)
+	// if there is an error
 	if errDTO != nil {
 		res := helper.BuildErrorResponse("failed to process request ", errDTO.Error(), helper.EmptyObj{})
 		context.JSON(http.StatusBadRequest, res)
@@ -70,9 +71,10 @@ func (c *bookController) Insert(context *gin.Context) {
 		if err == nil {
 			BookCreateDTO.UserID = convertedUserID
 		}
-		res := c.bookService.Insert(BookCreateDTO)
-		response := helper.BuildResponse(true, "OK", res)
-		context.JSON(http.StatusCreated, response)
+		// save book to database
+		res := c.bookService.Insert(BookCreateDTO)        // bookservice insert
+		response := helper.BuildResponse(true, "OK", res) // build response with status ok
+		context.JSON(http.StatusCreated, response)        // display response in json
 	}
 }
 
@@ -139,5 +141,6 @@ func (c *bookController) getUserIDByToken(token string) string {
 		panic(err.Error())
 	}
 	claims := aToken.Claims.(jwt.MapClaims)
-	return fmt.Sprintf("%v", claims["user_id"])
+	id := fmt.Sprintf("%v",claims["user_id"])
+	return id
 }
